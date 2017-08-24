@@ -7,14 +7,17 @@ from ipware.ip import get_ip
 from .models import Analytic
 from .models import Url
 
+
 class UrlForm(ModelForm):
 
     class Meta:
         model = Url
         fields = ['url']
 
+
 def new_url(request):
     return render(request, 'new.html', {'url_form': UrlForm()})
+
 
 def create_url(request):
     if request.method == 'POST':
@@ -23,10 +26,12 @@ def create_url(request):
             url = form.save()
             return redirect('view_url', tiny_url=url.tiny_url)
 
+
 def view_url(request, tiny_url):
     url_object = get_object_or_404(Url, tiny_url=tiny_url)
     url = request.build_absolute_uri(reverse('goto_url', args=(tiny_url,)))
     return render(request, 'show.html', {'url_object': url_object, 'url': url})
+
 
 def goto_url(request, tiny_url):
     url_object = get_object_or_404(Url, tiny_url=tiny_url)
